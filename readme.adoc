@@ -1,0 +1,248 @@
+= Writing DITA with Vim
+
+== Introduction
+
+This topic records my best practices for using Vim to write DITA topics.
+It can, of course, be applied to any XML topic and even HTML topics.
+
+== Setting up autocomplete
+
+Autocomplete has limited usefulness I think because it can take longer to enter an element this way than typing it.
+However, if you do want to use it, set up a folder to work in and open the first file in its own instance of Vim.
+This allows you to use autocomplete that limits terms to only those in the project.
+If you work on XML files in a tab with lots of other buffers open, you will have unrelated terms when you attempt to use autocomplete.
+
+For autocomplete, use ctrl-n.
+
+== Adding the template
+
+There are several options for adding the basic topic template
+
+=== Option 1: Use a mapping in the vimrc
+
+----
+" DITA snippets
+noremap <leader>dt a<?xml version="1.0" encoding="utf-8"?><CR><!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd"><CR><task id=""><CR><taskbody><CR><title>Title</title><CR></taskbody><CR></task><ESC>
+noremap <leader>dc a<?xml version="1.0" encoding="utf-8"?><CR><!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd"><CR><concept id=""><CR><conbody><CR><title>Title</title><CR></conbody><CR></concept><ESC>
+----
+
+=== Option 2: Read in the text from a file
+
+Set up a file for each template
+
+For a task topic, add the following to task.txt.
+
+----
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="">
+  <taskbody>
+    <title>Title</title>
+  </taskbody>
+</task>
+----
+
+For a concept topic, add the following to concept.txt.
+
+----
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="">
+  <conbody>
+    <title>Title</title>
+  </conbody>
+</concept>
+----
+
+To read in the file:
+
+. Open a buffer and give it a filename.
+. Read in the template with `:0r templates\task.txt`.
+
+The `0` in front of `r` ensures the text is read into line 1, preventing a blank line at the top of the buffer.
+
+The advantage of this method is that you don't have to clutter up your vimrc.
+The disadvantage is that you have to copy the template files into your working directory, or have them in a different location.
+Probably, the best way to do this is to use a folder called `templates` for all the templates you can read in.
+
+== Adding a table
+
+Tables are the most complicated structures in XML.
+The best way to add a table is to read one in from a separate template file.
+
+. Position your cursor where you want to place the table.
+. :r templates\table-2col.xml
+
+== Adding an ID attribute
+
+. Create a file with a list of ID attributes, such as GUIDs copied from a generator application.
+. Open the file in a vertical split to the left of the XML file you are working on.
+. Place your cursor on the opening quotation mark where you want to paste the ID.
+. Use ctrl-h to jump to the GUID file.
+. Cut one ID with `diW`.
++
+You need to cut it so you don't use the same ID twice.
+Also, by using diW, you don't copy the newline character that will cause the line to split after pasting.
+
+. ctrl-l to jump back to the XML file location to paste into.
+. p to paste.
+
+== Entering text in between existing tags
+
+To enter text in between existing tags:
+
+. Jump to the line with the element.
+. Anywhere on the line use `cit` to enter insert mode inside the tags.
+. Start typing.
+
+== Adding a pair of tags
+
+With the xml.vim filetype in use, it is easy to add a pair of tags.
+Type the first tag and press enter.
+The closing tag is automatically added.
+To add a newline so you can add a second child tag, simply press enter twice.
+
+== Wrapping text in an element
+
+This method relies on the xml.vim filetype.
+
+For inline elements, you need to wrap the text to be bolded etc.
+
+To wrap text as you type: 
+
+. Mid sentence, type the name of the wrapper element and stay in Insert mode.
+. Type `;;`.
+. Type the name of the word to put in the wrapper element.
+
+To wrap multiple words after they are already typed:
+
+. Select some text with visual mode.
++
+For example, place the cursor at the start and type `v2e` to select the next two words.
+
+. Type `\v` to place a tag around it.
+. Enter the name of the element in the dialog box.
+. Optionally enter an attribute for the element.
+
+== Using ALE
+
+You can lint XML files using xmllint and the plugin ALE.
+
+First, make sure that xmllint is installed.
+
+First, make sure the plugin is loaded from the vimrc.
+
+[source,vim]
+----
+" Plug 'dense-analysis/ale'
+Plug 'w0rp/ale'
+" post install (yarn install | npm install) then load plugin only for editing supported files
+----
+
+Then make sure ALE plugin settings are included in the vimrc.
+
+----
+" .............................................................................
+" ALE plugin settings
+" .............................................................................
+
+let g:ale_html_tidy_executable = "C:\Program Files\tidy-5.6.0-vc14-64b\bin\tidy.exe"
+" Maybe need to turn off tidy here and in the html linters section below if it reports an error.
+
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['eslint'],
+\   'html': ['tidy', 'prettier'],
+\   'css': ['stylelint', 'prettier'],
+\   'xml': ['xmllint'],
+\}
+
+let g:ale_fix_on_save = 0       " Use 1 to activate - run :ALEFix instead if you want to manually fix a file
+let g:ale_linters_explicit = 1
+let g:ale_lint_on_text_changed = 'never'   " Only activate on save
+let g:ale_lint_on_enter = 0    " start when GVim starts = 1. to turn it off use 0
+let g:ale_sign_column_always = 1 " 1 keeps the sign column open at all times
+
+let g:ale_linters = {
+ \   'css': ['stylelint', 'prettier'],
+ \   'html': ['tidy', 'prettier'],
+ \   'javascript': ['eslint'],
+ \   'xml': ['xmllint'],
+ \}
+
+" let g:CSSLint_FileTypeList = ['css', 'less', 'sass'] " Activates csslint for use in Vim with css files - using stylelint
+let g:ale_set_highlights = 0  " 1 allows highlights for text symbols in the column, 0 disables
+" highlight ALEWarning ctermbg=DarkMagenta
+
+let g:ale_sign_error = 'x'
+" let g:ale_sign_warning = '!'
+" let g:ale_sign_error = '⚠️' "Less aggressive than the default '>>'
+" let g:ale_sign_error = '▲'
+let g:ale_sign_warning = '💡'
+"let g:ale_echo_msg_warning_str = 'Warning 📣'
+"let g:ale_echo_msg_error_str = '❧ Error'
+" highlight clear ALEErrorSign
+" highlight clear ALEWarningSign
+let g:ale_open_list = 1  "  can be useful if combining ALE with another plugin
+let g:ale_keep_list_window_open = 1
+
+" Bind F12 to fixing problems with ALE
+nmap <F12> <Plug>(ale_fix)
+----
+
+== Adding images
+
+The syntax for an image is shown in this example.
+
+[source,xml]
+----
+<image href="bike.gif" placement="break" align="center" width="400">
+  <alt>Two-wheeled bicycle</alt>
+</image>
+----
+
+== Adding cross-references
+
+References: 
+https://www.oxygenxml.com/dita/styleguide/webhelp-feedback/Artefact/Cross_Referencing/c_Cross-references_Sample_Topic.html#concept_sample_xref
+https://idratherbewriting.com/cross_references/
+
+The general structure of a cross-reference is:
+
+* Target topic file name 
+* Target topic topic ID (with preceeding #)
+* Target topic element name (with preceeding /)
+
+<filename>#<topic-id>/<topic-element>
+
+I guess this structure allows for a file to have multiple topics nested inside it.
+
+Here is the text inside a target file called mytopic.xml.
+
+[source,xml]
+----
+<concept id="mytopicid">
+...
+<section id="myelementid">
+<title>Date Selection</title>
+...
+----
+
+Here is the source:
+
+[source,xml]
+----
+<p> 
+Select the date range you want. See the previous section, 
+<xref href="mytopic.xml#mytopic/myelementid type="section"/>
+, for details about the options.
+</p>
+----
+
+
+
+
+== Adding conrefs
+
+
+

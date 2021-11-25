@@ -1,0 +1,30 @@
+<table>
+<tgroup cols="2">
+<colspec colname="col1" colwidth="1*"/>
+<colspec colname="col1" colwidth="2*"/>
+<thead>
+<row>
+<entry colname="col1" valign="top"></entry>
+<entry colname="col1" valign="top"></entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry></entry>
+<entry></entry>
+</row>
+<row>
+<entry></entry>
+<entry></entry>
+</row>
+<row>
+<entry></entry>
+<entry></entry>
+</row>
+<row>
+<entry></entry>
+<entry></entry>
+</row>
+</tbody>
+</tgroup>
+</table>

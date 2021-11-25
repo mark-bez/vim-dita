@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="task_6b869089-c996-41c0-b212-79ecbc80cc8e">
+  <taskbody>
+    <title>This is the title</title>
+    <steps>
+      <step>
+        <cmd/>
+        <stepinfo>
+          <p/>
+        </stepinfo>
+        <stepresult>
+        </stepresult>
+      </step>
+      <step>
+        <cmd></cmd>
+        <stepinfo>
+        </stepinfo>
+        <stepresult>
+        </stepresult>
+      </step>
+      <step>
+        <cmd></cmd>
+        <stepinfo>
+          <p></p>
+        </stepinfo>
+        <stepresult>
+          <p></p>
+        </stepresult>
+      </step>
+    </steps>
+  </taskbody>
+</task>
+

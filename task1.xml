@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="task_fc93506e-489e-4937-9c52-ed2fd5f9ad96">
+  <taskbody>
+    <title>Title</title>
+    <section>
+      <title>
+    This is the title
+  </title>
+      <p>In the first paragraph I want to write this.</p>
+      <p>In the second paragraph I want to write this.</p>
+      <ul>
+        <li>This is the first list item.</li>
+        <li>This is the second list item.</li>
+        <li>This is the third list item.</li>
+      </ul>
+      <p>And now a paragraph to finish up.</p>
+    </section>
+    <section>
+      <title>
+    This is the title of the second section.
+  </title>
+      <p>And here is a paragraph.</p>
+      <p>And here is another paragraph.</p>
+      <table>
+        <tgroup cols="2">
+          <colspec colname="COLSPEC0" colwidth="121*"/>
+          <colspec colname="COLSPEC1" colwidth="76*"/>
+          <thead>
+            <row>
+              <entry colname="COLSPEC0" valign="top">Animal</entry>
+              <entry colname="COLSPEC1" valign="top">Gestation</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Elephant (African and Asian)</entry>
+              <entry>19-22 months</entry>
+            </row>
+            <row>
+              <entry>Giraffe</entry>
+              <entry>15 months</entry>
+            </row>
+            <row>
+              <entry>Rhinoceros</entry>
+              <entry>14-16 months</entry>
+            </row>
+            <row>
+              <entry>Hippopotamus</entry>
+              <entry>7 1/2 months</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </taskbody>
+</task>
+
