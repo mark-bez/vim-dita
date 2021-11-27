@@ -15,6 +15,8 @@
         </cmd>
         <stepinfo>
           <p>One</p>
+<note conref="myconref.xml#topic-abcd/element-id" />
+<image href="something.jpg" placement="break" align="center" width="400" />
         </stepinfo>
         <stepresult></stepresult>
       </step>
